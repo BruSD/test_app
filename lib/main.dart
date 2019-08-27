@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -45,8 +47,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Color _randomColor;
+  Random _random = Random();
 
   void _incrementCounter() {
+    getRandomColor();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -55,6 +60,24 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future<void> getRandomColor() async {
+    Color setColor = Color.fromARGB(
+      _random.nextInt(256),
+      _random.nextInt(256),
+      _random.nextInt(256),
+      _random.nextInt(256),
+    );
+    setState(() {
+      _randomColor = setColor;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRandomColor();
   }
 
   @override
@@ -66,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: _randomColor,
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -105,6 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
+
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
